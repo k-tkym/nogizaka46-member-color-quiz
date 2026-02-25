@@ -191,28 +191,30 @@ export default function App() {
             )}
 
             <main className="flex-1 max-w-md mx-auto w-full p-4 flex flex-col items-center justify-center relative z-10 pb-20">
-                <div className="w-full bg-white rounded-3xl shadow-xl p-8 mb-6 text-center relative overflow-hidden ring-1 ring-slate-100">
+                <div className="w-full bg-white rounded-3xl shadow-xl p-8 mb-6 text-center relative overflow-hidden ring-1 ring-slate-100 min-h-[160px] flex flex-col justify-center">
                     <div className="absolute top-4 left-4 text-[10px] font-bold text-purple-500 border border-purple-100 px-2 py-0.5 rounded-full bg-purple-50">{currentMember.gen}期生</div>
                     <h2 className="text-4xl font-black mb-2 tracking-tight text-slate-800">{currentMember.name}</h2>
                     <p className="text-slate-400 text-sm font-medium">のサイリウムカラーは？</p>
 
                     {status !== 'idle' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 animate-in fade-in zoom-in duration-300">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white animate-in fade-in zoom-in duration-300 z-30">
                             {status === 'correct' ? (
                                 <>
-                                    <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-4 shadow-inner"><Check size={48} strokeWidth={4} /></div>
+                                    <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><Check size={40} strokeWidth={4} /></div>
                                     <p className="text-2xl font-black text-green-600">正解！</p>
                                 </>
                             ) : (
-                                <>
-                                    <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-4 shadow-inner"><X size={48} strokeWidth={4} /></div>
-                                    <p className="text-2xl font-black text-red-600">残念...</p>
-                                    <div className="mt-4 flex gap-3">
-                                        <div className="w-10 h-16 rounded-lg shadow-md border-2 border-white" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
-                                        <div className="w-10 h-16 rounded-lg shadow-md border-2 border-white" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
+                                <div className="flex flex-col items-center justify-center w-full px-4">
+                                    <div className="flex items-center gap-2 mb-2 text-red-600">
+                                        <X size={28} strokeWidth={4} />
+                                        <p className="text-2xl font-black italic">残念...</p>
                                     </div>
-                                    <p className="text-sm font-bold mt-3 text-slate-600">{currentMember.colors[0]} × {currentMember.colors[1]}</p>
-                                </>
+                                    <div className="flex gap-4 mb-2">
+                                        <div className="w-8 h-12 rounded-md shadow-md border-2 border-white ring-1 ring-slate-100" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
+                                        <div className="w-8 h-12 rounded-md shadow-md border-2 border-white ring-1 ring-slate-100" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
+                                    </div>
+                                    <p className="text-sm font-bold text-slate-600">正解：{currentMember.colors[0]} × {currentMember.colors[1]}</p>
+                                </div>
                             )}
                         </div>
                     )}
