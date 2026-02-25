@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Check, X, RefreshCw, Settings2 } from 'lucide-react';
-import { MEMBER_DATA } from './data/members';
-import { OFFICIAL_COLORS } from './data/colors';
+import { MEMBER_DATA, OFFICIAL_COLORS } from './data';
 
 export default function App() {
     const [mode, setMode] = useState('easy');
