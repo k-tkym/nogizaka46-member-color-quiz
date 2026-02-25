@@ -149,7 +149,7 @@ export default function App() {
                 />
             )}
             <header className="bg-white border-b px-4 py-3 flex justify-between items-center sticky top-0 z-20 shadow-sm">
-                <h1 className="text-lg font-bold text-purple-700 flex items-center gap-2">乃木坂46 サイリウム特訓</h1>
+                <h1 className="text-lg font-bold text-purple-700 flex items-center gap-2">乃木坂46 サイリウムクイズ</h1>
                 <button onClick={() => setShowSettings(!showSettings)} className="p-2 hover:bg-slate-100 rounded-full"><Settings2 size={24} /></button>
             </header>
             {showSettings && (
