@@ -141,25 +141,33 @@ export default function App() {
 
     if (!currentMember) return null;
 
+    const bgStyle = status === 'correct'
+        ? { background: `linear-gradient(135deg, ${getHex(currentMember.colorIds[0])}22, ${getHex(currentMember.colorIds[1])}22)` }
+        : status === 'wrong'
+            ? { background: '#fee2e2' }
+            : {};
+
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors relative overflow-x-hidden">
-            {status !== 'idle' && (
-                <div className="fixed inset-0 z-0 opacity-20 pointer-events-none transition-all duration-300"
-                    style={{ background: status === 'correct' ? `linear-gradient(45deg, ${getHex(currentMember.colorIds[0])}, ${getHex(currentMember.colorIds[1])})` : '#ef4444' }}
-                />
-            )}
-            <header className="bg-white border-b px-4 py-3 flex justify-between items-center sticky top-0 z-20 shadow-sm">
+        <div className="min-h-[100dvh] bg-slate-50 text-slate-900 transition-colors relative flex flex-col overflow-x-hidden">
+            {/* 背景フィードバックレイヤー */}
+            <div
+                className={`fixed inset-0 z-0 transition-all duration-500 ${status !== 'idle' ? 'opacity-100' : 'opacity-0'}`}
+                style={bgStyle}
+            />
+
+            <header className="bg-white/80 backdrop-blur-md border-b px-4 py-3 flex justify-between items-center sticky top-0 z-20 shadow-sm">
                 <h1 className="text-lg font-bold text-purple-700 flex items-center gap-2">乃木坂46 サイリウムクイズ</h1>
-                <button onClick={() => setShowSettings(!showSettings)} className="p-2 hover:bg-slate-100 rounded-full"><Settings2 size={24} /></button>
+                <button onClick={() => setShowSettings(!showSettings)} className="p-2 hover:bg-slate-100 rounded-full transition-colors"><Settings2 size={24} /></button>
             </header>
+
             {showSettings && (
-                <div className="bg-white border-b p-4 z-20 sticky top-[53px] shadow-md">
+                <div className="bg-white/95 backdrop-blur-md border-b p-4 z-20 sticky top-[53px] shadow-md animate-in slide-in-from-top duration-200">
                     <div className="max-w-md mx-auto space-y-4">
                         <div>
                             <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">モード</label>
                             <div className="flex gap-2">
                                 {['easy', 'hard'].map(m => (
-                                    <button key={m} onClick={() => setMode(m)} className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 ${mode === m ? 'border-purple-600 bg-purple-50 text-purple-700' : 'border-slate-200 text-slate-400'}`}>
+                                    <button key={m} onClick={() => setMode(m)} className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 transition-all ${mode === m ? 'border-purple-600 bg-purple-50 text-purple-700' : 'border-slate-200 text-slate-400'}`}>
                                         {m === 'easy' ? 'イージー' : 'ハード'}
                                     </button>
                                 ))}
@@ -172,7 +180,7 @@ export default function App() {
                                     <button key={g} onClick={() => {
                                         const next = gens.includes(g) ? gens.filter(x => x !== g) : [...gens, g];
                                         if (next.length > 0) setGens(next);
-                                    }} className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 ${gens.includes(g) ? 'border-purple-600 bg-purple-600 text-white' : 'border-slate-200 text-slate-400'}`}>
+                                    }} className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 transition-all ${gens.includes(g) ? 'border-purple-600 bg-purple-600 text-white shadow-sm' : 'border-slate-200 text-slate-400'}`}>
                                         {g}期
                                     </button>
                                 ))}
@@ -181,40 +189,48 @@ export default function App() {
                     </div>
                 </div>
             )}
-            <main className="max-w-md mx-auto p-4 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] relative z-10">
-                <div className="w-full bg-white rounded-3xl shadow-xl p-8 mb-8 text-center relative overflow-hidden">
-                    <div className="absolute top-4 left-4 text-xs font-bold text-purple-400 border border-purple-200 px-2 py-1 rounded">{currentMember.gen}期生</div>
-                    <h2 className="text-4xl font-black mb-2 tracking-tight">{currentMember.name}</h2>
-                    <p className="text-slate-400 text-sm">のサイリウムカラーは？</p>
+
+            <main className="flex-1 max-w-md mx-auto w-full p-4 flex flex-col items-center justify-center relative z-10 pb-20">
+                <div className="w-full bg-white rounded-3xl shadow-xl p-8 mb-6 text-center relative overflow-hidden ring-1 ring-slate-100">
+                    <div className="absolute top-4 left-4 text-[10px] font-bold text-purple-500 border border-purple-100 px-2 py-0.5 rounded-full bg-purple-50">{currentMember.gen}期生</div>
+                    <h2 className="text-4xl font-black mb-2 tracking-tight text-slate-800">{currentMember.name}</h2>
+                    <p className="text-slate-400 text-sm font-medium">のサイリウムカラーは？</p>
+
                     {status !== 'idle' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 animate-in fade-in zoom-in duration-200">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 animate-in fade-in zoom-in duration-300">
                             {status === 'correct' ? (
                                 <>
-                                    <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4"><Check size={40} strokeWidth={4} /></div>
-                                    <p className="text-xl font-bold text-green-600">正解！</p>
+                                    <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-4 shadow-inner"><Check size={48} strokeWidth={4} /></div>
+                                    <p className="text-2xl font-black text-green-600">正解！</p>
                                 </>
                             ) : (
                                 <>
-                                    <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4"><X size={40} strokeWidth={4} /></div>
-                                    <p className="text-xl font-bold text-red-600">残念...</p>
-                                    <div className="mt-4 flex gap-2">
-                                        <div className="w-8 h-12 rounded shadow-sm" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
-                                        <div className="w-8 h-12 rounded shadow-sm" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
+                                    <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-4 shadow-inner"><X size={48} strokeWidth={4} /></div>
+                                    <p className="text-2xl font-black text-red-600">残念...</p>
+                                    <div className="mt-4 flex gap-3">
+                                        <div className="w-10 h-16 rounded-lg shadow-md border-2 border-white" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
+                                        <div className="w-10 h-16 rounded-lg shadow-md border-2 border-white" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
                                     </div>
-                                    <p className="text-xs font-bold mt-2 text-slate-500">正解: {currentMember.colors[0]} × {currentMember.colors[1]}</p>
+                                    <p className="text-sm font-bold mt-3 text-slate-600">{currentMember.colors[0]} × {currentMember.colors[1]}</p>
                                 </>
                             )}
                         </div>
                     )}
                 </div>
-                <div className="w-full space-y-4">
+
+                <div className="w-full space-y-3">
                     {mode === 'easy' ? (
                         <div className="grid grid-cols-1 gap-3">
                             {options.map((opt, idx) => (
-                                <button key={idx} onClick={() => handleAnswer(opt.colorIds)} disabled={status !== 'idle'} className="bg-white hover:bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl flex items-center justify-between transition-all shadow-sm">
-                                    <div className="flex gap-1.5">
-                                        <div className="w-6 h-10 rounded-sm border shadow-inner" style={{ backgroundColor: getHex(opt.colorIds[0]) }} />
-                                        <div className="w-6 h-10 rounded-sm border shadow-inner" style={{ backgroundColor: getHex(opt.colorIds[1]) }} />
+                                <button
+                                    key={idx}
+                                    onClick={() => handleAnswer(opt.colorIds)}
+                                    disabled={status !== 'idle'}
+                                    className="bg-white hover:bg-slate-50 active:scale-95 border-2 border-slate-100 p-4 rounded-2xl flex items-center justify-between transition-all shadow-sm group"
+                                >
+                                    <div className="flex gap-2">
+                                        <div className="w-7 h-12 rounded-md border border-slate-200 shadow-sm transition-transform group-hover:scale-105" style={{ backgroundColor: getHex(opt.colorIds[0]) }} />
+                                        <div className="w-7 h-12 rounded-md border border-slate-200 shadow-sm transition-transform group-hover:scale-105" style={{ backgroundColor: getHex(opt.colorIds[1]) }} />
                                     </div>
                                     <div className="font-bold text-lg text-slate-700">{opt.colors[0]} × {opt.colors[1]}</div>
                                 </button>
@@ -222,28 +238,46 @@ export default function App() {
                         </div>
                     ) : (
                         <div className="space-y-6">
-                            <div className="flex justify-center gap-4">
+                            <div className="flex justify-center gap-6">
                                 {[0, 1].map(i => (
-                                    <div key={i} className={`w-16 h-24 rounded-xl border-4 flex items-center justify-center text-xs font-bold transition-all ${selectedHardColors[i] ? 'shadow-lg scale-110' : 'border-dashed border-slate-200 bg-slate-100 text-slate-400'}`} style={{ backgroundColor: selectedHardColors[i] ? getHex(selectedHardColors[i]) : 'transparent', borderColor: selectedHardColors[i] ? '#fff' : '' }}>
-                                        {!selectedHardColors[i] && (i + 1 + '本目')}
+                                    <div
+                                        key={i}
+                                        className={`w-20 h-32 rounded-2xl border-4 flex items-center justify-center text-xs font-black transition-all duration-300 ${selectedHardColors[i] ? 'shadow-xl scale-110 border-white' : 'border-dashed border-slate-200 bg-slate-100/50 text-slate-400'}`}
+                                        style={{ backgroundColor: selectedHardColors[i] ? getHex(selectedHardColors[i]) : 'transparent' }}
+                                    >
+                                        {!selectedHardColors[i] && (
+                                            <div className="text-center">
+                                                <span className="block text-lg opacity-30">?</span>
+                                                <span>{i + 1}本目</span>
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>
-                            <div className="grid grid-cols-4 gap-2 bg-white p-4 rounded-3xl shadow-inner border border-slate-100">
+                            <div className="grid grid-cols-4 gap-2.5 bg-white p-4 rounded-[2rem] shadow-xl border border-slate-100">
                                 {OFFICIAL_COLORS.map(c => (
-                                    <button key={c.id} onClick={() => selectHardColor(c.id)} disabled={status !== 'idle'} className={`aspect-square rounded-xl shadow-sm border border-slate-200 flex flex-col items-center justify-center active:scale-90 ${c.text}`} style={{ backgroundColor: c.hex }}>
-                                        <span className="text-[9px] font-black bg-white/40 px-1 rounded backdrop-blur-[2px]">{c.name}</span>
+                                    <button
+                                        key={c.id}
+                                        onClick={() => selectHardColor(c.id)}
+                                        disabled={status !== 'idle'}
+                                        className={`aspect-square rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center active:scale-90 transition-transform ${c.text}`}
+                                        style={{ backgroundColor: c.hex }}
+                                    >
+                                        <span className="text-[10px] font-black bg-white/40 px-1.5 py-0.5 rounded-md backdrop-blur-sm shadow-sm">{c.name}</span>
                                     </button>
                                 ))}
                             </div>
-                            <button onClick={() => setSelectedHardColors([null, null])} className="w-full py-2 text-slate-400 text-sm font-bold flex items-center justify-center gap-1"><RefreshCw size={14} /> 選択をリセット</button>
+                            <button onClick={() => setSelectedHardColors([null, null])} className="w-full py-3 text-slate-400 text-sm font-bold flex items-center justify-center gap-2 hover:text-slate-600 transition-colors"><RefreshCw size={16} /> 選択をリセット</button>
                         </div>
                     )}
                 </div>
             </main>
-            <footer className="p-8 text-center text-slate-400 text-[10px] tracking-widest uppercase">
-                <p>© 2026 nogizaka46-member-color-quiz</p>
-                <p className="mt-1 text-[8px] lowercase">Unofficial Fan App</p>
+
+            <footer className="p-8 text-center relative z-10">
+                <div className="inline-block px-4 py-2 rounded-full bg-slate-100/50 backdrop-blur-sm border border-slate-200/50">
+                    <p className="text-slate-400 text-[9px] tracking-[0.2em] uppercase font-bold italic">© 2026 nogizaka46-member-color-quiz</p>
+                    <p className="text-[8px] text-slate-300 lowercase mt-0.5">Unofficial Fan App</p>
+                </div>
             </footer>
         </div>
     );
