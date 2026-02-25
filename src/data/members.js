@@ -1,4 +1,6 @@
-export const MEMBER_DATA_RAW = [
+import { COLOR_MAP } from './colors';
+
+const MEMBER_DATA_RAW = [
     { name: '伊藤理々杏', gen: 3, colors: ['紫', '赤'] },
     { name: '岩本蓮加', gen: 3, colors: ['ピンク', '赤'] },
     { name: '梅澤美波', gen: 3, colors: ['青', '水色'] },
@@ -39,3 +41,9 @@ export const MEMBER_DATA_RAW = [
     { name: '森平麗心', gen: 6, colors: ['黄', '黄'] },
     { name: '矢田萌華', gen: 6, colors: ['白', '紫'] },
 ];
+
+export const MEMBER_DATA = MEMBER_DATA_RAW.map((member, index) => ({
+    id: `m-${index}`,
+    ...member,
+    colorIds: member.colors.map((color) => COLOR_MAP[color]),
+}));

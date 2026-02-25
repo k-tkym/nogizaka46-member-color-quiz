@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Check, X, RefreshCw, Settings2 } from 'lucide-react';
-import { MEMBER_DATA_RAW } from './data/members';
-import { OFFICIAL_COLORS, COLOR_MAP } from './data/colors';
-
-const MEMBER_DATA = MEMBER_DATA_RAW.map((m, idx) => ({
-    id: `m-${idx}`,
-    ...m,
-    colorIds: m.colors.map(c => COLOR_MAP[c])
-}));
+import { MEMBER_DATA } from './data/members';
+import { OFFICIAL_COLORS } from './data/colors';
 
 export default function App() {
     const [mode, setMode] = useState('easy');
