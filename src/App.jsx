@@ -143,38 +143,38 @@ export default function App() {
                 </div>
             )}
 
-            <main className="flex-1 max-w-md mx-auto w-full p-4 flex flex-col items-center justify-center relative z-10 pb-24">
-                <div className="w-full bg-white/90 rounded-[2.5rem] shadow-2xl p-12 mb-10 text-center relative overflow-visible ring-2 ring-slate-100 min-h-[220px] flex flex-col justify-center">
-                    <div className="absolute top-6 left-8 text-[12px] font-bold text-purple-500 border border-purple-100 px-3 py-1 rounded-full bg-purple-50 shadow">{currentMember.gen}期生</div>
-                    <h2 className="text-4xl font-black mb-4 tracking-tight text-slate-800">{currentMember.name}</h2>
-                    <p className="text-slate-400 text-base font-medium mb-6">のサイリウムカラーは？</p>
+            <main className="flex-1 max-w-md mx-auto w-full p-4 flex flex-col items-center justify-center relative z-10 pb-20">
+                <div className="w-full bg-white/90 rounded-[2rem] shadow-xl p-8 mb-8 text-center relative overflow-visible ring-2 ring-slate-100 min-h-[180px] flex flex-col justify-center">
+                    <div className="absolute top-4 left-6 text-[12px] font-bold text-purple-500 border border-purple-100 px-3 py-1 rounded-full bg-purple-50 shadow">{currentMember.gen}期生</div>
+                    <h2 className="text-3xl font-black mb-2 tracking-tight text-slate-800">{currentMember.name}</h2>
+                    <p className="text-slate-400 text-base font-medium mb-4">のサイリウムカラーは？</p>
 
                     {status !== 'idle' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 animate-in fade-in zoom-in duration-300 z-30 px-4 rounded-[2.5rem] shadow-2xl">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 animate-in fade-in zoom-in duration-300 z-30 px-4 rounded-[2rem] shadow-xl">
                             {status === 'correct' ? (
                                 <>
-                                    <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-4 shadow-inner border-4 border-green-100"><Check size={48} strokeWidth={4} /></div>
-                                    <p className="text-3xl font-black text-green-600 mb-8">正解！</p>
+                                    <div className="w-14 h-14 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2 shadow-inner border-2 border-green-100"><Check size={36} strokeWidth={4} /></div>
+                                    <p className="text-2xl font-black text-green-600 mb-4">正解！</p>
                                 </>
                             ) : (
                                 <>
-                                    <div className="flex items-center gap-3 mb-6 text-red-600">
-                                        <X size={36} strokeWidth={4} />
-                                        <p className="text-3xl font-black italic">残念...</p>
+                                    <div className="flex flex-col items-center justify-center mb-2">
+                                        <div className="flex items-center gap-2 mb-2 text-red-600">
+                                            <X size={28} strokeWidth={4} />
+                                            <p className="text-xl font-black italic">残念...</p>
+                                        </div>
+                                        <div className="flex gap-4 mb-2 justify-center">
+                                            <div className="w-12 h-12 rounded-full shadow-md border-2 border-white ring-1 ring-slate-200" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
+                                            <div className="w-12 h-12 rounded-full shadow-md border-2 border-white ring-1 ring-slate-200" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
+                                        </div>
+                                        <p className="text-base font-bold text-slate-700 mb-2">正解：{currentMember.colors[0]} × {currentMember.colors[1]}</p>
+                                        <button
+                                            onClick={nextQuestion}
+                                            className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full font-bold text-base shadow-lg active:scale-95 transition-transform mt-2"
+                                        >
+                                            次へ <ArrowRight size={18} />
+                                        </button>
                                     </div>
-                                    <div className="flex gap-8 mb-6 justify-center">
-                                        <div className="w-16 h-16 rounded-full shadow-xl border-4 border-white ring-2 ring-slate-200" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
-                                        <div className="w-16 h-16 rounded-full shadow-xl border-4 border-white ring-2 ring-slate-200" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
-                                    </div>
-                                    <p className="text-lg font-bold text-slate-700 mb-8">正解：{currentMember.colors[0]} × {currentMember.colors[1]}</p>
-
-                                    {/* 手動で次へ進むボタン */}
-                                    <button
-                                        onClick={nextQuestion}
-                                        className="flex items-center gap-2 px-10 py-4 bg-slate-900 text-white rounded-full font-bold text-lg shadow-xl active:scale-95 transition-transform mb-2"
-                                    >
-                                        次へ <ArrowRight size={20} />
-                                    </button>
                                 </>
                             )}
                         </div>
