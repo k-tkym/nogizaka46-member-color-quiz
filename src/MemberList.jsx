@@ -27,14 +27,26 @@ export default function MemberList() {
                                     <td className="py-2 px-3 font-bold text-slate-800">{m.name}</td>
                                     <td className="py-2 px-3">
                                         <div className="flex items-center gap-2">
-                                            <span
-                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${getHex(m.colorIds[0]).toLowerCase() === '#fff' ? 'border-slate-400' : 'border-white'}`}
-                                                style={{ backgroundColor: getHex(m.colorIds[0]) }}
-                                            />
-                                            <span
-                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${getHex(m.colorIds[1]).toLowerCase() === '#fff' ? 'border-slate-400' : 'border-white'}`}
-                                                style={{ backgroundColor: getHex(m.colorIds[1]) }}
-                                            />
+                                            {(() => {
+                                                const hex0 = getHex(m.colorIds[0]).toLowerCase();
+                                                const isWhite0 = ['#fff', '#ffffff', 'rgb(255,255,255)', 'rgb(255, 255, 255)'].includes(hex0) || hex0.replace(/\s/g, '') === 'rgb(255,255,255)';
+                                                return (
+                                                    <span
+                                                        className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite0 ? 'border-slate-400' : 'border-white'}`}
+                                                        style={{ backgroundColor: getHex(m.colorIds[0]) }}
+                                                    />
+                                                );
+                                            })()}
+                                            {(() => {
+                                                const hex1 = getHex(m.colorIds[1]).toLowerCase();
+                                                const isWhite1 = ['#fff', '#ffffff', 'rgb(255,255,255)', 'rgb(255, 255, 255)'].includes(hex1) || hex1.replace(/\s/g, '') === 'rgb(255,255,255)';
+                                                return (
+                                                    <span
+                                                        className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite1 ? 'border-slate-400' : 'border-white'}`}
+                                                        style={{ backgroundColor: getHex(m.colorIds[1]) }}
+                                                    />
+                                                );
+                                            })()}
                                             <span className="ml-2 text-sm text-slate-700 font-bold">{m.colors[0]} × {m.colors[1]}</span>
                                         </div>
                                     </td>
