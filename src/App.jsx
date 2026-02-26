@@ -2,6 +2,12 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Check, X, RefreshCw, Settings2, ArrowRight } from 'lucide-react';
 import { MEMBER_DATA, OFFICIAL_COLORS } from './data';
 
+// --- 定数定義 ---
+const CORRECT_DELAY_MS = 1200; // 正解時の自動遷移ディレイ
+const WRONG_DELAY_MS = 4000;   // 不正解時の自動遷移ディレイ
+const MAX_DISTRACTORS = 3;     // イージーモードの選択肢数（誤答）
+const MAX_RETRY_SAME_MEMBER = 10; // 連続出題回避の最大リトライ回数
+
 export default function App() {
     const [mode, setMode] = useState('easy');
     const [gens, setGens] = useState([3, 4, 5, 6]);
@@ -32,7 +38,7 @@ export default function App() {
         do {
             member = filteredMembers[Math.floor(Math.random() * filteredMembers.length)];
             tries++;
-        } while (filteredMembers.length > 1 && member.id === prevMemberIdRef.current && tries < 10);
+        } while (filteredMembers.length > 1 && member.id === prevMemberIdRef.current && tries < MAX_RETRY_SAME_MEMBER);
         setCurrentMember(member);
         prevMemberIdRef.current = member.id;
 
@@ -48,7 +54,7 @@ export default function App() {
                     distractors.push(m);
                     seenKeys.add(key);
                 }
-                if (distractors.length >= 3) break;
+                if (distractors.length >= MAX_DISTRACTORS) break;
             }
             setOptions([member, ...distractors].sort(() => 0.5 - Math.random()));
         }
@@ -67,8 +73,8 @@ export default function App() {
 
         setStatus(isCorrect ? 'correct' : 'wrong');
 
-        // 正解なら1.2秒で次へ、不正解なら4秒待機（またはボタン押し）
-        const delay = isCorrect ? 1200 : 4000;
+        // 正解・不正解時の自動遷移ディレイ
+        const delay = isCorrect ? CORRECT_DELAY_MS : WRONG_DELAY_MS;
         timerRef.current = setTimeout(() => nextQuestion(), delay);
     };
 
