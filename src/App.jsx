@@ -108,13 +108,13 @@ export default function App() {
                 style={bgStyle}
             />
 
-                        <header className="bg-white/80 backdrop-blur-md border-b px-4 py-3 flex justify-between items-center sticky top-0 z-20 shadow-sm">
-                                <h1 className="text-lg font-bold text-purple-700 flex items-center gap-2">乃木坂46 サイリウムクイズ</h1>
-                                <div className="flex items-center gap-2">
-                                    <a href="/list" className="text-xs font-bold text-purple-600 px-3 py-1 rounded-full hover:bg-purple-50 transition-colors border border-purple-100">一覧</a>
-                                    <button onClick={() => setShowSettings(!showSettings)} className="p-2 hover:bg-slate-100 rounded-full transition-colors"><Settings2 size={24} /></button>
-                                </div>
-                        </header>
+            <header className="bg-white/80 backdrop-blur-md border-b px-4 py-3 flex justify-between items-center sticky top-0 z-20 shadow-sm">
+                <h1 className="text-lg font-bold text-purple-700 flex items-center gap-2">乃木坂46 サイリウムクイズ</h1>
+                <div className="flex items-center gap-2">
+                    <a href="/list" className="text-xs font-bold text-purple-600 px-3 py-1 rounded-full hover:bg-purple-50 transition-colors border border-purple-100">一覧</a>
+                    <button onClick={() => setShowSettings(!showSettings)} className="p-2 hover:bg-slate-100 rounded-full transition-colors"><Settings2 size={24} /></button>
+                </div>
+            </header>
 
             {showSettings && (
                 <div className="bg-white/95 backdrop-blur-md border-b p-4 z-20 sticky top-[53px] shadow-md animate-in slide-in-from-top duration-200">
