@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Check, X, RefreshCw, Settings2 } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { Check, X, RefreshCw, Settings2, ArrowRight } from 'lucide-react';
 import { MEMBER_DATA, OFFICIAL_COLORS } from './data';
 
 export default function App() {
@@ -11,9 +11,15 @@ export default function App() {
     const [status, setStatus] = useState('idle');
     const [showSettings, setShowSettings] = useState(false);
 
+    // タイマー管理用
+    const timerRef = useRef(null);
+
     const filteredMembers = useMemo(() => MEMBER_DATA.filter(m => gens.includes(m.gen)), [gens]);
 
     const nextQuestion = () => {
+        // 既存のタイマーがあればクリア
+        if (timerRef.current) clearTimeout(timerRef.current);
+
         setStatus('idle');
         setSelectedHardColors([null, null]);
         if (filteredMembers.length === 0) return;
@@ -38,15 +44,22 @@ export default function App() {
         }
     };
 
-    useEffect(() => { nextQuestion(); }, [mode, gens]);
+    useEffect(() => {
+        nextQuestion();
+        return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    }, [mode, gens]);
 
     const handleAnswer = (answerColorIds) => {
         if (status !== 'idle') return;
         const sortedAnswer = [...answerColorIds].sort();
         const sortedCorrect = [...currentMember.colorIds].sort();
         const isCorrect = sortedAnswer[0] === sortedCorrect[0] && sortedAnswer[1] === sortedCorrect[1];
+
         setStatus(isCorrect ? 'correct' : 'wrong');
-        setTimeout(() => nextQuestion(), 1500);
+
+        // 正解なら1.2秒で次へ、不正解なら4秒待機（またはボタン押し）
+        const delay = isCorrect ? 1200 : 4000;
+        timerRef.current = setTimeout(() => nextQuestion(), delay);
     };
 
     const selectHardColor = (colorId) => {
@@ -74,7 +87,6 @@ export default function App() {
 
     return (
         <div className="min-h-[100dvh] bg-slate-50 text-slate-900 transition-colors relative flex flex-col overflow-x-hidden">
-            {/* 背景フィードバックレイヤー */}
             <div
                 className={`fixed inset-0 z-0 transition-all duration-500 ${status !== 'idle' ? 'opacity-100' : 'opacity-0'}`}
                 style={bgStyle}
@@ -116,30 +128,38 @@ export default function App() {
             )}
 
             <main className="flex-1 max-w-md mx-auto w-full p-4 flex flex-col items-center justify-center relative z-10 pb-20">
-                <div className="w-full bg-white rounded-3xl shadow-xl p-8 mb-6 text-center relative overflow-hidden ring-1 ring-slate-100 min-h-[160px] flex flex-col justify-center">
+                <div className="w-full bg-white rounded-3xl shadow-xl p-8 mb-6 text-center relative overflow-hidden ring-1 ring-slate-100 min-h-[180px] flex flex-col justify-center">
                     <div className="absolute top-4 left-4 text-[10px] font-bold text-purple-500 border border-purple-100 px-2 py-0.5 rounded-full bg-purple-50">{currentMember.gen}期生</div>
                     <h2 className="text-4xl font-black mb-2 tracking-tight text-slate-800">{currentMember.name}</h2>
                     <p className="text-slate-400 text-sm font-medium">のサイリウムカラーは？</p>
 
                     {status !== 'idle' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white animate-in fade-in zoom-in duration-300 z-30">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white animate-in fade-in zoom-in duration-300 z-30 px-4">
                             {status === 'correct' ? (
                                 <>
                                     <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2 shadow-inner"><Check size={40} strokeWidth={4} /></div>
                                     <p className="text-2xl font-black text-green-600">正解！</p>
                                 </>
                             ) : (
-                                <div className="flex flex-col items-center justify-center w-full px-4">
-                                    <div className="flex items-center gap-2 mb-2 text-red-600">
+                                <>
+                                    <div className="flex items-center gap-2 mb-3 text-red-600">
                                         <X size={28} strokeWidth={4} />
                                         <p className="text-2xl font-black italic">残念...</p>
                                     </div>
-                                    <div className="flex gap-4 mb-2">
-                                        <div className="w-8 h-12 rounded-md shadow-md border-2 border-white ring-1 ring-slate-100" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
-                                        <div className="w-8 h-12 rounded-md shadow-md border-2 border-white ring-1 ring-slate-100" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
+                                    <div className="flex gap-4 mb-3">
+                                        <div className="w-8 h-14 rounded-lg shadow-md border-2 border-white ring-1 ring-slate-100" style={{ backgroundColor: getHex(currentMember.colorIds[0]) }} />
+                                        <div className="w-8 h-14 rounded-lg shadow-md border-2 border-white ring-1 ring-slate-100" style={{ backgroundColor: getHex(currentMember.colorIds[1]) }} />
                                     </div>
-                                    <p className="text-sm font-bold text-slate-600">正解：{currentMember.colors[0]} × {currentMember.colors[1]}</p>
-                                </div>
+                                    <p className="text-sm font-bold text-slate-600 mb-4">正解：{currentMember.colors[0]} × {currentMember.colors[1]}</p>
+
+                                    {/* 手動で次へ進むボタン */}
+                                    <button
+                                        onClick={nextQuestion}
+                                        className="flex items-center gap-2 px-6 py-2 bg-slate-900 text-white rounded-full font-bold text-sm shadow-lg active:scale-95 transition-transform"
+                                    >
+                                        次へ <ArrowRight size={16} />
+                                    </button>
+                                </>
                             )}
                         </div>
                     )}
@@ -202,7 +222,7 @@ export default function App() {
 
             <footer className="p-8 text-center relative z-10">
                 <div className="inline-block px-4 py-2 rounded-full bg-slate-100/50 backdrop-blur-sm border border-slate-200/50">
-                    <p className="text-slate-400 text-[9px] tracking-[0.2em] uppercase font-bold italic">© 2026 nogizaka46-member-color-quiz</p>
+                    <p className="text-slate-400 text-[9px] tracking-[0.2em] uppercase font-bold italic">© 2026 k-tkym</p>
                     <p className="text-[8px] text-slate-300 lowercase mt-0.5">Unofficial Fan App</p>
                 </div>
             </footer>
