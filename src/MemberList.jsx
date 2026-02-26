@@ -9,7 +9,7 @@ export default function MemberList() {
             <div className="max-w-2xl mx-auto">
                 <header className="flex items-center justify-between mb-6">
                     <h1 className="text-2xl font-black text-purple-700">サイリウムカラー一覧</h1>
-                    <a href="/" className="text-sm text-purple-600 underline font-bold">クイズに戻る</a>
+                    <a href="#/" className="text-sm text-purple-600 underline font-bold">クイズに戻る</a>
                 </header>
                 <div className="overflow-x-auto">
                     <table className="w-full bg-white rounded-2xl shadow-md border border-slate-100">
