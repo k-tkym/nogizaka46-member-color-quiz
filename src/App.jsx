@@ -13,6 +13,8 @@ export default function App() {
 
     // タイマー管理用
     const timerRef = useRef(null);
+    // 直前の出題メンバーID
+    const prevMemberIdRef = useRef(null);
 
     const filteredMembers = useMemo(() => MEMBER_DATA.filter(m => gens.includes(m.gen)), [gens]);
 
@@ -23,8 +25,16 @@ export default function App() {
         setStatus('idle');
         setSelectedHardColors([null, null]);
         if (filteredMembers.length === 0) return;
-        const member = filteredMembers[Math.floor(Math.random() * filteredMembers.length)];
+
+        // 直前と同じメンバーを避けて抽選（最大10回リトライ）
+        let member = null;
+        let tries = 0;
+        do {
+            member = filteredMembers[Math.floor(Math.random() * filteredMembers.length)];
+            tries++;
+        } while (filteredMembers.length > 1 && member.id === prevMemberIdRef.current && tries < 10);
         setCurrentMember(member);
+        prevMemberIdRef.current = member.id;
 
         if (mode === 'easy') {
             const getPairKey = (colorIds) => [...colorIds].sort().join('-');
