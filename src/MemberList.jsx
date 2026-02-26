@@ -13,12 +13,6 @@ export default function MemberList() {
                 </header>
                 <div className="overflow-x-auto">
                     <table className="w-full bg-white rounded-2xl shadow-md border border-slate-100">
-                        <thead>
-                            <tr className="bg-purple-50 text-purple-700 text-left text-xs">
-                                <th className="py-2 px-3 font-bold">名前</th>
-                                <th className="py-2 px-3 font-bold">サイリウムカラー</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {(() => {
                                 // 期ごとにグループ化
