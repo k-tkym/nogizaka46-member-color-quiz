@@ -27,8 +27,14 @@ export default function MemberList() {
                                     <td className="py-2 px-3 font-bold text-slate-800">{m.name}</td>
                                     <td className="py-2 px-3">
                                         <div className="flex items-center gap-2">
-                                            <span className="w-7 h-7 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: getHex(m.colorIds[0]) }} />
-                                            <span className="w-7 h-7 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: getHex(m.colorIds[1]) }} />
+                                            <span
+                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${getHex(m.colorIds[0]).toLowerCase() === '#fff' ? 'border-slate-400' : 'border-white'}`}
+                                                style={{ backgroundColor: getHex(m.colorIds[0]) }}
+                                            />
+                                            <span
+                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${getHex(m.colorIds[1]).toLowerCase() === '#fff' ? 'border-slate-400' : 'border-white'}`}
+                                                style={{ backgroundColor: getHex(m.colorIds[1]) }}
+                                            />
                                             <span className="ml-2 text-sm text-slate-700 font-bold">{m.colors[0]} × {m.colors[1]}</span>
                                         </div>
                                     </td>
