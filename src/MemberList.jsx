@@ -55,7 +55,6 @@ export default function MemberList() {
                         </tbody>
                     </table>
                 </div>
-                <p className="text-xs text-slate-400 mt-6 text-center">※ スクショ・印刷用に最適化しています</p>
             </div>
         </div>
     );
