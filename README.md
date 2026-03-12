@@ -33,6 +33,24 @@ npm run dev
 npm run build
 ```
 
+## Dockerでの起動
+
+```bash
+# 初回ビルド + 起動
+docker compose up --build
+
+# 2回目以降の起動
+docker compose up
+```
+
+ブラウザで `http://localhost:5173` にアクセスしてください。
+
+停止する場合:
+
+```bash
+docker compose down
+```
+
 ## 免責事項
 
 - 本アプリは乃木坂46の非公式ファンアプリです。
