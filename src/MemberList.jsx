@@ -1,7 +1,7 @@
 import React from "react";
-import { MEMBER_DATA, OFFICIAL_COLORS } from "./data";
+import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
 
-const getHex = (id) => OFFICIAL_COLORS.find((c) => c.id === id)?.hex || "#ccc";
+const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
 
 export default function MemberList() {
     return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Check, X, RefreshCw, Settings2, ArrowRight } from 'lucide-react';
-import { MEMBER_DATA, OFFICIAL_COLORS } from './data';
+import { MEMBER_DATA, OFFICIAL_COLORS, OFFICIAL_COLOR_BY_ID } from './data';
 
 // --- 定数定義 ---
 const CORRECT_DELAY_MS = 1200; // 正解時の自動遷移ディレイ
@@ -91,7 +91,7 @@ export default function App() {
         }
     };
 
-    const getHex = (id) => OFFICIAL_COLORS.find(c => c.id === id)?.hex || '#ccc';
+    const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || '#ccc';
 
     if (!currentMember) return null;
 
