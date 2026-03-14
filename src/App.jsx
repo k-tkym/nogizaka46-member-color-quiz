@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Check, X, RefreshCw, Settings2, ArrowRight } from 'lucide-react';
 import { MEMBER_DATA, OFFICIAL_COLORS } from './data';
+import { getPairKey, isCorrectColorPair } from './quizLogic';
 
 // --- 定数定義 ---
 const CORRECT_DELAY_MS = 1200; // 正解時の自動遷移ディレイ
@@ -43,7 +44,6 @@ export default function App() {
         prevMemberIdRef.current = member.id;
 
         if (mode === 'easy') {
-            const getPairKey = (colorIds) => [...colorIds].sort().join('-');
             const correctKey = getPairKey(member.colorIds);
             const seenKeys = new Set([correctKey]);
             const distractors = [];
@@ -67,9 +67,7 @@ export default function App() {
 
     const handleAnswer = (answerColorIds) => {
         if (status !== 'idle') return;
-        const sortedAnswer = [...answerColorIds].sort();
-        const sortedCorrect = [...currentMember.colorIds].sort();
-        const isCorrect = sortedAnswer[0] === sortedCorrect[0] && sortedAnswer[1] === sortedCorrect[1];
+        const isCorrect = isCorrectColorPair(answerColorIds, currentMember.colorIds);
 
         setStatus(isCorrect ? 'correct' : 'wrong');
 

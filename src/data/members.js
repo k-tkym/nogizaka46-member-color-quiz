@@ -1,4 +1,4 @@
-import { COLOR_MAP } from './colors';
+import { COLOR_MAP } from './colors.js';
 
 const MEMBER_DATA_RAW = [
     { name: '伊藤理々杏', gen: 3, colors: ['紫', '赤'] },
