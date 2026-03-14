@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { MEMBER_DATA, OFFICIAL_COLORS } from "./data";
 
 const getHex = (id) => OFFICIAL_COLORS.find((c) => c.id === id)?.hex || "#ccc";
+const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
+
+const groupMembersByGen = (members) => {
+    const grouped = {};
+
+    members.forEach((member) => {
+        if (!grouped[member.gen]) grouped[member.gen] = [];
+        grouped[member.gen].push(member);
+    });
+
+    return Object.entries(grouped).sort(([genA], [genB]) => Number(genA) - Number(genB));
+};
 
 export default function MemberList() {
+    const groupedMembers = useMemo(() => groupMembersByGen(MEMBER_DATA), []);
+
     return (
         <div className="min-h-[100dvh] bg-slate-50 text-slate-900 p-4">
             <div className="max-w-2xl mx-auto">
@@ -14,50 +28,34 @@ export default function MemberList() {
                 <div className="overflow-x-auto">
                     <table className="w-full bg-white rounded-2xl shadow-md border border-slate-100">
                         <tbody>
-                            {(() => {
-                                // 期ごとにグループ化
-                                const grouped = {};
-                                MEMBER_DATA.forEach(m => {
-                                    if (!grouped[m.gen]) grouped[m.gen] = [];
-                                    grouped[m.gen].push(m);
-                                });
-                                // 期の昇順で出力
-                                return Object.keys(grouped).sort((a, b) => a - b).flatMap(gen => [
-                                    <tr key={`gen-${gen}`} className="bg-purple-100/60">
-                                        <td colSpan={2} className="py-2 px-3 font-bold text-purple-700 text-base border-t border-purple-200">{gen}期</td>
-                                    </tr>,
-                                    ...grouped[gen].map(m => (
-                                        <tr key={m.id} className="border-t border-slate-100 hover:bg-slate-50">
-                                            <td className="py-2 px-3 font-bold text-slate-800">{m.name}</td>
-                                            <td className="py-2 px-3">
-                                                <div className="flex items-center gap-2">
-                                                    {(() => {
-                                                        const hex0 = getHex(m.colorIds[0]).toLowerCase();
-                                                        const isWhite0 = ['#fff', '#ffffff', 'rgb(255,255,255)', 'rgb(255, 255, 255)'].includes(hex0) || hex0.replace(/\s/g, '') === 'rgb(255,255,255)';
-                                                        return (
-                                                            <span
-                                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite0 ? 'border-slate-400' : 'border-white'}`}
-                                                                style={{ backgroundColor: getHex(m.colorIds[0]) }}
-                                                            />
-                                                        );
-                                                    })()}
-                                                    {(() => {
-                                                        const hex1 = getHex(m.colorIds[1]).toLowerCase();
-                                                        const isWhite1 = ['#fff', '#ffffff', 'rgb(255,255,255)', 'rgb(255, 255, 255)'].includes(hex1) || hex1.replace(/\s/g, '') === 'rgb(255,255,255)';
-                                                        return (
-                                                            <span
-                                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite1 ? 'border-slate-400' : 'border-white'}`}
-                                                                style={{ backgroundColor: getHex(m.colorIds[1]) }}
-                                                            />
-                                                        );
-                                                    })()}
-                                                    <span className="ml-2 text-sm text-slate-700 font-bold">{m.colors[0]} × {m.colors[1]}</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ]);
-                            })()}
+                            {groupedMembers.flatMap(([gen, members]) => [
+                                <tr key={`gen-${gen}`} className="bg-purple-100/60">
+                                    <td colSpan={2} className="py-2 px-3 font-bold text-purple-700 text-base border-t border-purple-200">{gen}期</td>
+                                </tr>,
+                                ...members.map((member) => (
+                                    <tr key={member.id} className="border-t border-slate-100 hover:bg-slate-50">
+                                        <td className="py-2 px-3 font-bold text-slate-800">{member.name}</td>
+                                        <td className="py-2 px-3">
+                                            <div className="flex items-center gap-2">
+                                                {member.colorIds.map((colorId, index) => {
+                                                    const hex = getHex(colorId);
+                                                    const normalizedHex = hex.toLowerCase().replace(/\s/g, "");
+                                                    const isWhite = WHITE_COLOR_VALUES.has(normalizedHex);
+
+                                                    return (
+                                                        <span
+                                                            key={`${member.id}-${index}-${colorId}`}
+                                                            className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite ? "border-slate-400" : "border-white"}`}
+                                                            style={{ backgroundColor: hex }}
+                                                        />
+                                                    );
+                                                })}
+                                                <span className="ml-2 text-sm text-slate-700 font-bold">{member.colors[0]} × {member.colors[1]}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ])}
                         </tbody>
                     </table>
                 </div>
