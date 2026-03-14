@@ -12,6 +12,10 @@ export const OFFICIAL_COLORS = [
     { id: 'turquoise', name: 'ターコイズ', hex: '#40E0D0', text: 'text-black' },
 ];
 
+export const OFFICIAL_COLOR_BY_ID = Object.fromEntries(
+    OFFICIAL_COLORS.map((color) => [color.id, color])
+);
+
 export const COLOR_MAP = {
     白: 'white',
     オレンジ: 'orange',
