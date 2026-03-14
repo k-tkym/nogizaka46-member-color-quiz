@@ -1,7 +1,7 @@
 import React from "react";
-import { MEMBER_DATA, OFFICIAL_COLORS } from "./data";
+import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
 
-const getHex = (id) => OFFICIAL_COLORS.find((c) => c.id === id)?.hex || "#ccc";
+const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
 const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
 
 const normalizeColorValue = (value) => value.toLowerCase().replace(/\s/g, "");
