@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID, SINGLE41_TYPE_LABELS } from "./data";
+import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
 
 const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
 const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
@@ -42,8 +42,8 @@ export default function MemberList() {
                                             <div className="flex items-center gap-2">
                                                 <span className="font-bold text-slate-800">{member.name}</span>
                                                 {member.single41Type && (
-                                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.single41Type === 'senbatsu' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
-                                                        {SINGLE41_TYPE_LABELS[member.single41Type]}
+                                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.single41Type === '選抜' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
+                                                        {member.single41Type}
                                                     </span>
                                                 )}
                                             </div>
