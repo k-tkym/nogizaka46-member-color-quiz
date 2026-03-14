@@ -8,6 +8,17 @@ const WRONG_DELAY_MS = 4000;   // 不正解時の自動遷移ディレイ
 const MAX_DISTRACTORS = 3;     // イージーモードの選択肢数（誤答）
 const MAX_RETRY_SAME_MEMBER = 10; // 連続出題回避の最大リトライ回数
 
+const shuffleArray = (items) => {
+    const shuffled = [...items];
+
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+    }
+
+    return shuffled;
+};
+
 export default function App() {
     const [mode, setMode] = useState('easy');
     const [gens, setGens] = useState([3, 4, 5, 6]);
@@ -47,7 +58,7 @@ export default function App() {
             const correctKey = getPairKey(member.colorIds);
             const seenKeys = new Set([correctKey]);
             const distractors = [];
-            const shuffledPool = [...MEMBER_DATA].sort(() => 0.5 - Math.random());
+            const shuffledPool = shuffleArray(MEMBER_DATA);
             for (const m of shuffledPool) {
                 const key = getPairKey(m.colorIds);
                 if (!seenKeys.has(key)) {
@@ -56,7 +67,7 @@ export default function App() {
                 }
                 if (distractors.length >= MAX_DISTRACTORS) break;
             }
-            setOptions([member, ...distractors].sort(() => 0.5 - Math.random()));
+            setOptions(shuffleArray([member, ...distractors]));
         }
     };
 
