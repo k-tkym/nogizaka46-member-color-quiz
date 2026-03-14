@@ -38,7 +38,16 @@ export default function MemberList() {
                                 </tr>,
                                 ...members.map((member) => (
                                     <tr key={member.id} className="border-t border-slate-100 hover:bg-slate-50">
-                                        <td className="py-2 px-3 font-bold text-slate-800">{member.name}</td>
+                                        <td className="py-2 px-3">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-bold text-slate-800">{member.name}</span>
+                                                {member.single41Type && (
+                                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.single41Type === '選抜' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
+                                                        {member.single41Type}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </td>
                                         <td className="py-2 px-3">
                                             <div className="flex items-center gap-2">
                                                 {member.colorIds.map((colorId, index) => (
