@@ -1,8 +1,12 @@
 import React, { useMemo } from "react";
-import { MEMBER_DATA, OFFICIAL_COLORS } from "./data";
+import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
 
-const getHex = (id) => OFFICIAL_COLORS.find((c) => c.id === id)?.hex || "#ccc";
+const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
 const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
+
+const normalizeColorValue = (value) => value.toLowerCase().replace(/\s/g, "");
+const getSwatchBorderClassName = (colorId) =>
+    WHITE_COLOR_VALUES.has(normalizeColorValue(getHex(colorId))) ? "border-slate-400" : "border-white";
 
 const groupMembersByGen = (members) => {
     const grouped = {};
@@ -37,19 +41,13 @@ export default function MemberList() {
                                         <td className="py-2 px-3 font-bold text-slate-800">{member.name}</td>
                                         <td className="py-2 px-3">
                                             <div className="flex items-center gap-2">
-                                                {member.colorIds.map((colorId, index) => {
-                                                    const hex = getHex(colorId);
-                                                    const normalizedHex = hex.toLowerCase().replace(/\s/g, "");
-                                                    const isWhite = WHITE_COLOR_VALUES.has(normalizedHex);
-
-                                                    return (
-                                                        <span
-                                                            key={`${member.id}-${index}-${colorId}`}
-                                                            className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite ? "border-slate-400" : "border-white"}`}
-                                                            style={{ backgroundColor: hex }}
-                                                        />
-                                                    );
-                                                })}
+                                                {member.colorIds.map((colorId, index) => (
+                                                    <span
+                                                        key={`${member.id}-${index}-${colorId}`}
+                                                        className={`w-7 h-7 rounded-full border-2 shadow-sm ${getSwatchBorderClassName(colorId)}`}
+                                                        style={{ backgroundColor: getHex(colorId) }}
+                                                    />
+                                                ))}
                                                 <span className="ml-2 text-sm text-slate-700 font-bold">{member.colors[0]} × {member.colors[1]}</span>
                                             </div>
                                         </td>
