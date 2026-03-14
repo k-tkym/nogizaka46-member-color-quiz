@@ -45,5 +45,3 @@ export const MEMBER_DATA = MEMBER_DATA_RAW.map((member, index) => ({
     ...member,
     colorIds: member.colors.map((color) => COLOR_MAP[color]),
 }));
-
-
