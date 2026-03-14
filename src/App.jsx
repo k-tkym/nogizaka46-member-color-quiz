@@ -23,6 +23,8 @@ const shuffleArray = (items) => {
 export default function App() {
     const [mode, setMode] = useState('easy');
     const [gens, setGens] = useState([3, 4, 5, 6]);
+    // null = すべて, 'senbatsu' = 選抜, 'under' = アンダー
+    const [single41Type, setSingle41Type] = useState(null);
     const [currentMember, setCurrentMember] = useState(null);
     const [options, setOptions] = useState([]);
     const [selectedHardColors, setSelectedHardColors] = useState([null, null]);
@@ -34,7 +36,10 @@ export default function App() {
     // 直前の出題メンバーID
     const prevMemberIdRef = useRef(null);
 
-    const filteredMembers = useMemo(() => MEMBER_DATA.filter(m => gens.includes(m.gen)), [gens]);
+    const filteredMembers = useMemo(() => MEMBER_DATA.filter(m =>
+        gens.includes(m.gen) &&
+        (single41Type === null || m.single41Type === single41Type)
+    ), [gens, single41Type]);
 
     const nextQuestion = () => {
         // 既存のタイマーがあればクリア
@@ -74,7 +79,7 @@ export default function App() {
     useEffect(() => {
         nextQuestion();
         return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-    }, [mode, gens]);
+    }, [mode, gens, single41Type]);
 
     const handleAnswer = (answerColorIds) => {
         if (status !== 'idle') return;
@@ -134,6 +139,20 @@ export default function App() {
                                 {['easy', 'hard'].map(m => (
                                     <button key={m} onClick={() => setMode(m)} className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 transition-all ${mode === m ? 'border-purple-600 bg-purple-50 text-purple-700' : 'border-slate-200 text-slate-400'}`}>
                                         {m === 'easy' ? 'イージー' : 'ハード'}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">41枚目シングル</label>
+                            <div className="flex gap-2">
+                                {[null, 'senbatsu', 'under'].map(t => (
+                                    <button
+                                        key={t ?? 'all'}
+                                        onClick={() => setSingle41Type(t)}
+                                        className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 transition-all ${single41Type === t ? 'border-purple-600 bg-purple-600 text-white shadow-sm' : 'border-slate-200 text-slate-400'}`}
+                                    >
+                                        {t === null ? 'すべて' : SINGLE41_TYPE_LABELS[t]}
                                     </button>
                                 ))}
                             </div>
