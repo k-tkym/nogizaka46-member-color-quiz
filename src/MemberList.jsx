@@ -2,6 +2,11 @@ import React from "react";
 import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
 
 const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
+const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
+
+const normalizeColorValue = (value) => value.toLowerCase().replace(/\s/g, "");
+const getSwatchBorderClassName = (colorId) =>
+    WHITE_COLOR_VALUES.has(normalizeColorValue(getHex(colorId))) ? "border-slate-400" : "border-white";
 
 export default function MemberList() {
     return (
@@ -32,21 +37,17 @@ export default function MemberList() {
                                             <td className="py-2 px-3">
                                                 <div className="flex items-center gap-2">
                                                     {(() => {
-                                                        const hex0 = getHex(m.colorIds[0]).toLowerCase();
-                                                        const isWhite0 = ['#fff', '#ffffff', 'rgb(255,255,255)', 'rgb(255, 255, 255)'].includes(hex0) || hex0.replace(/\s/g, '') === 'rgb(255,255,255)';
                                                         return (
                                                             <span
-                                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite0 ? 'border-slate-400' : 'border-white'}`}
+                                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${getSwatchBorderClassName(m.colorIds[0])}`}
                                                                 style={{ backgroundColor: getHex(m.colorIds[0]) }}
                                                             />
                                                         );
                                                     })()}
                                                     {(() => {
-                                                        const hex1 = getHex(m.colorIds[1]).toLowerCase();
-                                                        const isWhite1 = ['#fff', '#ffffff', 'rgb(255,255,255)', 'rgb(255, 255, 255)'].includes(hex1) || hex1.replace(/\s/g, '') === 'rgb(255,255,255)';
                                                         return (
                                                             <span
-                                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${isWhite1 ? 'border-slate-400' : 'border-white'}`}
+                                                                className={`w-7 h-7 rounded-full border-2 shadow-sm ${getSwatchBorderClassName(m.colorIds[1])}`}
                                                                 style={{ backgroundColor: getHex(m.colorIds[1]) }}
                                                             />
                                                         );
