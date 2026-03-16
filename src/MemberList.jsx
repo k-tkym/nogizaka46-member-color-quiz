@@ -58,8 +58,8 @@ export default function MemberList() {
                                 </tr>,
                                 ...members.map((member) => (
                                     <tr key={member.id} className="border-t border-slate-100 hover:bg-slate-50">
-                                        <td className="py-2 px-3 align-top">
-                                            <div className="flex flex-wrap items-start gap-x-2 gap-y-1">
+                                        <td className="py-2 px-3 align-middle">
+                                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                                                 <span className="min-w-0 font-bold text-slate-800">{member.name}</span>
                                                 {member.single41Type && (
                                                     <span className={`shrink-0 whitespace-nowrap text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.single41Type === '選抜' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
@@ -69,7 +69,7 @@ export default function MemberList() {
                                             </div>
                                         </td>
                                         <td className="py-2 px-3 align-middle">
-                                            <div className="flex items-start gap-3">
+                                            <div className="flex items-center gap-3">
                                                 <div className="flex shrink-0 items-center gap-2">
                                                     {member.colorIds.map((colorId, index) => (
                                                         <span
