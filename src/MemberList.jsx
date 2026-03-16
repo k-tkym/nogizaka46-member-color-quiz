@@ -39,7 +39,11 @@ export default function MemberList() {
                     </div>
                 </section>
                 <div className="overflow-x-auto">
-                    <table className="w-full bg-white rounded-2xl shadow-md border border-slate-100">
+                    <table className="w-full table-fixed bg-white rounded-2xl shadow-md border border-slate-100">
+                        <colgroup>
+                            <col />
+                            <col className="w-[12rem]" />
+                        </colgroup>
                         <tbody>
                             {groupedMembers.length === 0 && (
                                 <tr>
