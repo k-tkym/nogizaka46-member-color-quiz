@@ -68,7 +68,7 @@ export default function MemberList() {
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="py-2 px-3 align-top">
+                                        <td className="py-2 px-3 align-middle">
                                             <div className="flex items-start gap-3">
                                                 <div className="flex shrink-0 items-center gap-2">
                                                     {member.colorIds.map((colorId, index) => (
