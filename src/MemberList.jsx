@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
+import { filterMembersBySingle41Type, groupMembersByGen, SINGLE41_FILTER_OPTIONS } from "./memberListLogic";
 
 const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
 const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
@@ -7,25 +8,11 @@ const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
 const normalizeColorValue = (value) => value.toLowerCase().replace(/\s/g, "");
 const getSwatchBorderClassName = (colorId) =>
     WHITE_COLOR_VALUES.has(normalizeColorValue(getHex(colorId))) ? "border-slate-400" : "border-white";
-const SINGLE41_FILTER_OPTIONS = [null, "選抜", "アンダー"];
-
-const groupMembersByGen = (members) => {
-    const grouped = {};
-
-    members.forEach((member) => {
-        if (!grouped[member.gen]) grouped[member.gen] = [];
-        grouped[member.gen].push(member);
-    });
-
-    return Object.entries(grouped).sort(([genA], [genB]) => Number(genA) - Number(genB));
-};
 
 export default function MemberList() {
     const [single41Type, setSingle41Type] = useState(null);
     const groupedMembers = useMemo(() => {
-        const filteredMembers = MEMBER_DATA.filter((member) =>
-            single41Type === null || member.single41Type === single41Type
-        );
+        const filteredMembers = filterMembersBySingle41Type(MEMBER_DATA, single41Type);
 
         return groupMembersByGen(filteredMembers);
     }, [single41Type]);
