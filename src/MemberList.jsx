@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
+import { filterMembersBySingle41Type, groupMembersByGen, SINGLE41_FILTER_OPTIONS } from "./memberListLogic";
 
 const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
 const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
@@ -8,19 +9,13 @@ const normalizeColorValue = (value) => value.toLowerCase().replace(/\s/g, "");
 const getSwatchBorderClassName = (colorId) =>
     WHITE_COLOR_VALUES.has(normalizeColorValue(getHex(colorId))) ? "border-slate-400" : "border-white";
 
-const groupMembersByGen = (members) => {
-    const grouped = {};
-
-    members.forEach((member) => {
-        if (!grouped[member.gen]) grouped[member.gen] = [];
-        grouped[member.gen].push(member);
-    });
-
-    return Object.entries(grouped).sort(([genA], [genB]) => Number(genA) - Number(genB));
-};
-
 export default function MemberList() {
-    const groupedMembers = useMemo(() => groupMembersByGen(MEMBER_DATA), []);
+    const [single41Type, setSingle41Type] = useState(null);
+    const groupedMembers = useMemo(() => {
+        const filteredMembers = filterMembersBySingle41Type(MEMBER_DATA, single41Type);
+
+        return groupMembersByGen(filteredMembers);
+    }, [single41Type]);
 
     return (
         <div className="min-h-[100dvh] bg-slate-50 text-slate-900 p-4">
@@ -29,9 +24,30 @@ export default function MemberList() {
                     <h1 className="text-2xl font-black text-purple-700">サイリウムカラー一覧</h1>
                     <a href="#/" className="text-sm text-purple-600 underline font-bold">クイズに戻る</a>
                 </header>
+                <section className="mb-4">
+                    <p className="text-xs font-bold text-slate-500 uppercase mb-2">41枚目シングル</p>
+                    <div className="flex gap-2">
+                        {SINGLE41_FILTER_OPTIONS.map((type) => (
+                            <button
+                                key={type ?? "all"}
+                                onClick={() => setSingle41Type(type)}
+                                className={`flex-1 rounded-lg border-2 py-2 text-sm font-bold transition-all ${single41Type === type ? "border-purple-600 bg-purple-600 text-white shadow-sm" : "border-slate-200 bg-white text-slate-500"}`}
+                            >
+                                {type ?? "すべて"}
+                            </button>
+                        ))}
+                    </div>
+                </section>
                 <div className="overflow-x-auto">
                     <table className="w-full bg-white rounded-2xl shadow-md border border-slate-100">
                         <tbody>
+                            {groupedMembers.length === 0 && (
+                                <tr>
+                                    <td colSpan={2} className="px-3 py-8 text-center text-sm font-bold text-slate-400">
+                                        表示できるメンバーがいません
+                                    </td>
+                                </tr>
+                            )}
                             {groupedMembers.flatMap(([gen, members]) => [
                                 <tr key={`gen-${gen}`} className="bg-purple-100/60">
                                     <td colSpan={2} className="py-2 px-3 font-bold text-purple-700 text-base border-t border-purple-200">{gen}期</td>

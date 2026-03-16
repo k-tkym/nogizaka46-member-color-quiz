@@ -11,6 +11,7 @@ GitHub Pages: https://k-tkym.github.io/nogizaka46-member-color-quiz/
 
 - クイズモード: 選択肢から選ぶ「イージー」と、色を選んで回答する「ハード」の2種類
 - 期別フィルタ: 出題されるメンバーの期を選択可能
+- メンバー一覧フィルタ: 41枚目シングルの「選抜 / アンダー」で一覧を切り替え可能
 - レスポンシブ対応: PC・スマホ両方のブラウザで快適に動作
 
 ## 技術スタック
@@ -19,19 +20,6 @@ GitHub Pages: https://k-tkym.github.io/nogizaka46-member-color-quiz/
 - Styling: Tailwind CSS
 - Icons: Lucide React
 - Deployment: GitHub Pages
-
-## 開発用コマンド
-
-```bash
-# インストール
-npm install
-
-# 開発サーバーの起動
-npm run dev
-
-# ビルド
-npm run build
-```
 
 ## Dockerでの起動
 
@@ -44,6 +32,12 @@ docker compose up
 ```
 
 ブラウザで `http://localhost:5173` にアクセスしてください。
+
+テストとビルド確認も Docker 経由で実行できます。
+
+```bash
+docker compose run --rm app sh -lc "npm test && npm run build"
+```
 
 停止する場合:
 
