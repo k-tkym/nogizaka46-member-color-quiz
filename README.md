@@ -21,19 +21,6 @@ GitHub Pages: https://k-tkym.github.io/nogizaka46-member-color-quiz/
 - Icons: Lucide React
 - Deployment: GitHub Pages
 
-## 開発用コマンド
-
-```bash
-# インストール
-npm install
-
-# 開発サーバーの起動
-npm run dev
-
-# ビルド
-npm run build
-```
-
 ## Dockerでの起動
 
 ```bash
@@ -45,6 +32,12 @@ docker compose up
 ```
 
 ブラウザで `http://localhost:5173` にアクセスしてください。
+
+テストとビルド確認も Docker 経由で実行できます。
+
+```bash
+docker compose run --rm app sh -lc "npm test && npm run build"
+```
 
 停止する場合:
 
