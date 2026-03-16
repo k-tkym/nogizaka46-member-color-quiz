@@ -69,15 +69,19 @@ export default function MemberList() {
                                             </div>
                                         </td>
                                         <td className="py-2 px-3 align-top">
-                                            <div className="flex items-center gap-2">
-                                                {member.colorIds.map((colorId, index) => (
-                                                    <span
-                                                        key={`${member.id}-${index}-${colorId}`}
-                                                        className={`w-7 h-7 rounded-full border-2 shadow-sm ${getSwatchBorderClassName(colorId)}`}
-                                                        style={{ backgroundColor: getHex(colorId) }}
-                                                    />
-                                                ))}
-                                                <span className="ml-2 text-sm text-slate-700 font-bold">{member.colors[0]} × {member.colors[1]}</span>
+                                            <div className="flex items-start gap-3">
+                                                <div className="flex shrink-0 items-center gap-2">
+                                                    {member.colorIds.map((colorId, index) => (
+                                                        <span
+                                                            key={`${member.id}-${index}-${colorId}`}
+                                                            className={`h-7 w-7 shrink-0 rounded-full border-2 shadow-sm ${getSwatchBorderClassName(colorId)}`}
+                                                            style={{ backgroundColor: getHex(colorId) }}
+                                                        />
+                                                    ))}
+                                                </div>
+                                                <span className="min-w-0 text-sm font-bold text-slate-700 break-words">
+                                                    {member.colors[0]} × {member.colors[1]}
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>
