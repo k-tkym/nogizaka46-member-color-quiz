@@ -39,7 +39,11 @@ export default function MemberList() {
                     </div>
                 </section>
                 <div className="overflow-x-auto">
-                    <table className="w-full bg-white rounded-2xl shadow-md border border-slate-100">
+                    <table className="w-full table-fixed bg-white rounded-2xl shadow-md border border-slate-100">
+                        <colgroup>
+                            <col />
+                            <col className="w-[12rem]" />
+                        </colgroup>
                         <tbody>
                             {groupedMembers.length === 0 && (
                                 <tr>
@@ -54,26 +58,30 @@ export default function MemberList() {
                                 </tr>,
                                 ...members.map((member) => (
                                     <tr key={member.id} className="border-t border-slate-100 hover:bg-slate-50">
-                                        <td className="py-2 px-3">
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-bold text-slate-800">{member.name}</span>
+                                        <td className="py-2 px-3 align-middle">
+                                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                <span className="min-w-0 font-bold text-slate-800">{member.name}</span>
                                                 {member.single41Type && (
-                                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.single41Type === '選抜' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
+                                                    <span className={`shrink-0 whitespace-nowrap text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.single41Type === '選抜' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
                                                         {member.single41Type}
                                                     </span>
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="py-2 px-3">
-                                            <div className="flex items-center gap-2">
-                                                {member.colorIds.map((colorId, index) => (
-                                                    <span
-                                                        key={`${member.id}-${index}-${colorId}`}
-                                                        className={`w-7 h-7 rounded-full border-2 shadow-sm ${getSwatchBorderClassName(colorId)}`}
-                                                        style={{ backgroundColor: getHex(colorId) }}
-                                                    />
-                                                ))}
-                                                <span className="ml-2 text-sm text-slate-700 font-bold">{member.colors[0]} × {member.colors[1]}</span>
+                                        <td className="py-2 px-3 align-middle">
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex shrink-0 items-center gap-2">
+                                                    {member.colorIds.map((colorId, index) => (
+                                                        <span
+                                                            key={`${member.id}-${index}-${colorId}`}
+                                                            className={`h-7 w-7 shrink-0 rounded-full border-2 shadow-sm ${getSwatchBorderClassName(colorId)}`}
+                                                            style={{ backgroundColor: getHex(colorId) }}
+                                                        />
+                                                    ))}
+                                                </div>
+                                                <span className="min-w-0 text-sm font-bold text-slate-700 break-words">
+                                                    {member.colors[0]} × {member.colors[1]}
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>
