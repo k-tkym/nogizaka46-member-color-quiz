@@ -1,7 +1,7 @@
-export const SINGLE41_FILTER_OPTIONS = [null, '選抜', 'アンダー'];
+export const LATEST_SINGLE_FILTER_OPTIONS = [null, '選抜', 'アンダー'];
 
-export const filterMembersBySingle41Type = (members, single41Type) =>
-    members.filter((member) => single41Type === null || member.single41Type === single41Type);
+export const filterMembersByLatestSingleType = (members, latestSingleType) =>
+    members.filter((member) => latestSingleType === null || member.latestSingleType === latestSingleType);
 
 export const groupMembersByGen = (members) => {
     const grouped = {};

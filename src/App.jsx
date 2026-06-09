@@ -24,7 +24,7 @@ export default function App() {
     const [mode, setMode] = useState('easy');
     const [gens, setGens] = useState([3, 4, 5, 6]);
     // null = すべて, '選抜' = 選抜, 'アンダー' = アンダー
-    const [single41Type, setSingle41Type] = useState(null);
+    const [latestSingleType, setLatestSingleType] = useState(null);
     const [currentMember, setCurrentMember] = useState(null);
     const [options, setOptions] = useState([]);
     const [selectedHardColors, setSelectedHardColors] = useState([null, null]);
@@ -38,8 +38,8 @@ export default function App() {
 
     const filteredMembers = useMemo(() => MEMBER_DATA.filter(m =>
         gens.includes(m.gen) &&
-        (single41Type === null || m.single41Type === single41Type)
-    ), [gens, single41Type]);
+        (latestSingleType === null || m.latestSingleType === latestSingleType)
+    ), [gens, latestSingleType]);
 
     const nextQuestion = () => {
         // 既存のタイマーがあればクリア
@@ -79,7 +79,7 @@ export default function App() {
     useEffect(() => {
         nextQuestion();
         return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-    }, [mode, gens, single41Type]);
+    }, [mode, gens, latestSingleType]);
 
     const handleAnswer = (answerColorIds) => {
         if (status !== 'idle') return;
@@ -144,13 +144,13 @@ export default function App() {
                             </div>
                         </div>
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">41枚目シングル</label>
+                            <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">最新シングル</label>
                             <div className="flex gap-2">
                                 {[null, '選抜', 'アンダー'].map(t => (
                                     <button
                                         key={t ?? 'all'}
-                                        onClick={() => setSingle41Type(t)}
-                                        className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 transition-all ${single41Type === t ? 'border-purple-600 bg-purple-600 text-white shadow-sm' : 'border-slate-200 text-slate-400'}`}
+                                        onClick={() => setLatestSingleType(t)}
+                                        className={`flex-1 py-2 rounded-lg text-sm font-bold border-2 transition-all ${latestSingleType === t ? 'border-purple-600 bg-purple-600 text-white shadow-sm' : 'border-slate-200 text-slate-400'}`}
                                     >
                                         {t ?? 'すべて'}
                                     </button>
