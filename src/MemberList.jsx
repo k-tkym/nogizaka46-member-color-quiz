@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { MEMBER_DATA, OFFICIAL_COLOR_BY_ID } from "./data";
-import { filterMembersBySingle41Type, groupMembersByGen, SINGLE41_FILTER_OPTIONS } from "./memberListLogic";
+import { filterMembersByLatestSingleType, groupMembersByGen, LATEST_SINGLE_FILTER_OPTIONS } from "./memberListLogic";
 
 const getHex = (id) => OFFICIAL_COLOR_BY_ID[id]?.hex || "#ccc";
 const WHITE_COLOR_VALUES = new Set(["#fff", "#ffffff", "rgb(255,255,255)"]);
@@ -10,12 +10,12 @@ const getSwatchBorderClassName = (colorId) =>
     WHITE_COLOR_VALUES.has(normalizeColorValue(getHex(colorId))) ? "border-slate-400" : "border-white";
 
 export default function MemberList() {
-    const [single41Type, setSingle41Type] = useState(null);
+    const [latestSingleType, setLatestSingleType] = useState(null);
     const groupedMembers = useMemo(() => {
-        const filteredMembers = filterMembersBySingle41Type(MEMBER_DATA, single41Type);
+        const filteredMembers = filterMembersByLatestSingleType(MEMBER_DATA, latestSingleType);
 
         return groupMembersByGen(filteredMembers);
-    }, [single41Type]);
+    }, [latestSingleType]);
 
     return (
         <div className="min-h-[100dvh] bg-slate-50 text-slate-900 p-4">
@@ -25,13 +25,13 @@ export default function MemberList() {
                     <a href="#/" className="text-sm text-purple-600 underline font-bold">クイズに戻る</a>
                 </header>
                 <section className="mb-4">
-                    <p className="text-xs font-bold text-slate-500 uppercase mb-2">41枚目シングル</p>
+                    <p className="text-xs font-bold text-slate-500 uppercase mb-2">最新シングル</p>
                     <div className="flex gap-2">
-                        {SINGLE41_FILTER_OPTIONS.map((type) => (
+                        {LATEST_SINGLE_FILTER_OPTIONS.map((type) => (
                             <button
                                 key={type ?? "all"}
-                                onClick={() => setSingle41Type(type)}
-                                className={`flex-1 rounded-lg border-2 py-2 text-sm font-bold transition-all ${single41Type === type ? "border-purple-600 bg-purple-600 text-white shadow-sm" : "border-slate-200 bg-white text-slate-500"}`}
+                                onClick={() => setLatestSingleType(type)}
+                                className={`flex-1 rounded-lg border-2 py-2 text-sm font-bold transition-all ${latestSingleType === type ? "border-purple-600 bg-purple-600 text-white shadow-sm" : "border-slate-200 bg-white text-slate-500"}`}
                             >
                                 {type ?? "すべて"}
                             </button>
@@ -61,9 +61,9 @@ export default function MemberList() {
                                         <td className="py-2 px-3 align-middle">
                                             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                                                 <span className="min-w-0 font-bold text-slate-800">{member.name}</span>
-                                                {member.single41Type && (
-                                                    <span className={`shrink-0 whitespace-nowrap text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.single41Type === '選抜' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
-                                                        {member.single41Type}
+                                                {member.latestSingleType && (
+                                                    <span className={`shrink-0 whitespace-nowrap text-[10px] font-bold px-1.5 py-0.5 rounded-full ${member.latestSingleType === '選抜' ? 'bg-purple-100 text-purple-700' : 'bg-sky-100 text-sky-700'}`}>
+                                                        {member.latestSingleType}
                                                     </span>
                                                 )}
                                             </div>
