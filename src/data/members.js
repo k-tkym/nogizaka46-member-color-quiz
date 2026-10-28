@@ -3,13 +3,13 @@ import { COLOR_MAP } from './colors.js';
 // latestSingleType: 最新シングルにおける区分 ('選抜' | 'アンダー' | null)
 const MEMBER_DATA_RAW = [
     { name: '伊藤理々杏', gen: 3, colors: ['紫', '赤'], latestSingleType: 'アンダー' },
-    { name: '岩本蓮加', gen: 3, colors: ['ピンク', '赤'], latestSingleType: '選抜' },
+    { name: '岩本蓮加', gen: 3, colors: ['ピンク', '赤'], latestSingleType: 'アンダー' },
     { name: '遠藤さくら', gen: 4, colors: ['白', 'ピンク'], latestSingleType: '選抜' },
     { name: '賀喜遥香', gen: 4, colors: ['オレンジ', '緑'], latestSingleType: '選抜' },
-    { name: '金川紗耶', gen: 4, colors: ['赤', '水色'], latestSingleType: 'アンダー' },
+    { name: '金川紗耶', gen: 4, colors: ['赤', '水色'], latestSingleType: '選抜' },
     { name: '柴田柚菜', gen: 4, colors: ['青', '黄緑'], latestSingleType: 'アンダー' },
     { name: '田村真佑', gen: 4, colors: ['紫', '水色'], latestSingleType: '選抜' },
-    { name: '筒井あやめ', gen: 4, colors: ['紫', '紫'], latestSingleType: '選抜' },
+    { name: '筒井あやめ', gen: 4, colors: ['紫', '紫'], latestSingleType: 'アンダー' },
     { name: '黒見明香', gen: 4, colors: ['紫', '緑'], latestSingleType: 'アンダー' },
     { name: '林瑠奈', gen: 4, colors: ['ピンク', 'ピンク'], latestSingleType: '選抜' },
     { name: '弓木奈於', gen: 4, colors: ['赤', '黄緑'], latestSingleType: '選抜' },
@@ -17,8 +17,8 @@ const MEMBER_DATA_RAW = [
     { name: '池田瑛紗', gen: 5, colors: ['白', '緑'], latestSingleType: '選抜' },
     { name: '一ノ瀬美空', gen: 5, colors: ['水色', '水色'], latestSingleType: '選抜' },
     { name: '井上和', gen: 5, colors: ['白', '赤'], latestSingleType: '選抜' },
-    { name: '岡本姫奈', gen: 5, colors: ['紫', '青'], latestSingleType: 'アンダー' },
-    { name: '小川彩', gen: 5, colors: ['白', '白'], latestSingleType: 'アンダー' },
+    { name: '岡本姫奈', gen: 5, colors: ['紫', '青'], latestSingleType: '選抜' },
+    { name: '小川彩', gen: 5, colors: ['白', '白'], latestSingleType: '選抜' },
     { name: '奥田いろは', gen: 5, colors: ['ピンク', '黄緑'], latestSingleType: 'アンダー' },
     { name: '川﨑桜', gen: 5, colors: ['ピンク', '緑'], latestSingleType: '選抜' },
     { name: '菅原咲月', gen: 5, colors: ['ピンク', '水色'], latestSingleType: '選抜' },
@@ -32,8 +32,8 @@ const MEMBER_DATA_RAW = [
     { name: '鈴木佑捺', gen: 6, colors: ['水色', '白'], latestSingleType: 'アンダー' },
     { name: '瀬戸口心月', gen: 6, colors: ['青', '黄'], latestSingleType: '選抜' },
     { name: '長嶋凛桜', gen: 6, colors: ['ピンク', 'オレンジ'], latestSingleType: 'アンダー' },
-    { name: '増田三莉音', gen: 6, colors: ['青', '青'], latestSingleType: null },
-    { name: '森平麗心', gen: 6, colors: ['黄', '黄'], latestSingleType: '選抜' },
+    { name: '増田三莉音', gen: 6, colors: ['青', '青'], latestSingleType: 'アンダー' },
+    { name: '森平麗心', gen: 6, colors: ['黄', '黄'], latestSingleType: 'アンダー' },
     { name: '矢田萌華', gen: 6, colors: ['白', '紫'], latestSingleType: '選抜' },
 ];
 
